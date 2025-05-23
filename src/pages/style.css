@@ -1,0 +1,83 @@
+/* 
+.contact-information{
+    color: darkred;
+    line-height: 2rem;
+    font-size: 1.25rem;
+    width: 40vw;
+    background-color: #dfb40790;
+    padding: 2rem;
+    margin-bottom: 5rem; 
+    border-color: rgb(0, 0, 0);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.738);
+}
+
+.contact-align{
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+}label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+    color: #fff;
+}
+
+input{
+    width: 100%; 
+    padding: 0.4rem;
+    font-size: 1rem;
+    border: 2px solid  #dfb407;
+    border-radius: 4px; 
+}
+
+select{
+    width: 100%; 
+    padding: 0.4rem;
+    font-size: 1rem;
+    border: 2px solid  #dfb407;
+    border-radius: 4px; 
+}
+
+
+button {
+    margin-top: 2rem;
+    background-color: white; 
+    font-size: 0.5em;
+    color:  #dfb407; 
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
+    border: 2px solid  #dfb407; 
+    border-radius: 4px; 
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color:  #dfb407c1;
+    transition: 1s;
+    color: white;
+}
+
+
+
+a:hover {
+    text-decoration: underline;
+}
+
+.contact-us {
+    font-size: 4rem;
+    padding: 1rem;
+    height: 12vh;
+    margin-top: 2rem; 
+    text-shadow: #dfb407 2px 0 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.contact-text {
+    font-size: 1.5rem; 
+    padding: 1rem; 
+    margin: 2rem; 
+} */
