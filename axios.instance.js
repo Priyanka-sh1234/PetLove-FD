@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { baseURL } from './config';
 
 const instance = axios.create(
     {
-        baseURL:'https://petlove-bd.onrender.com',
+        baseURL,
         timeout:1000,
     }
 );
