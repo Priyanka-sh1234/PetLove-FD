@@ -12,7 +12,6 @@ import {
 } from 'react-icons/fa';
 import { Table } from 'antd';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { baseURL } from '../../config';
 import { useNavigate } from 'react-router';
 import instance from '../../axios.instance';
@@ -37,26 +36,35 @@ function StatCard({ icon, title, value }) {
 function ClinicHomePage() {
     const clinicEmail = localStorage.getItem("ClinicEmail");
     const clinicName = localStorage.getItem("ClinicName");
-    const [Count, setCount] = useState('');
-    const [todaycount, settodaycount] = useState('');
-    const [AllAppoints, setAllAppoints] = useState('');
+    const [Count, setCount] = useState(0);
+    const [todaycount, settodaycount] = useState(0);
+    const [AllAppoints, setAllAppoints] = useState([]);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const getAllAppointForClinic = async () => {
+            console.log("ClinicEmail from localStorage:", clinicEmail);
+            if (!clinicEmail) {
+                toast.error("Clinic email not found. Please log in again.");
+                return;
+            }
+
             try {
                 const response = await instance.get(`${baseURL}/api/auth/getAllAppointForClinic`, {
                     params: { clinicEmail }
                 });
-                setAllAppoints(response?.data?.data);
-                setCount(response?.data?.count);
-                settodaycount(response?.data?.todayCount);
+                console.log("Appointment API response:", response.data);
+
+                setAllAppoints(response.data.data || []);
+                setCount(response.data.count || 0);
+                settodaycount(response.data.todayCount || 0);
             } catch (error) {
-                console.error("Error fetching appointments:", error);
-                toast.error(error.response?.data?.message || "Failed to fetch appointments");
+                console.error("Error fetching appointments:", error?.response?.data || error.message);
+                toast.error(error?.response?.data?.message || "Failed to fetch appointments");
             }
         };
+
         getAllAppointForClinic();
     }, [clinicEmail]);
 
@@ -92,7 +100,13 @@ function ClinicHomePage() {
             dataIndex: 'appointmentStatus',
             key: 'appointmentStatus',
             render: (status) => (
-                <span className={`font-semibold ${status === 'Confirmed' ? 'text-green-600' : status === 'Pending' ? 'text-yellow-600' : 'text-red-600'}`}>
+                <span className={`font-semibold ${
+                    status === 'Confirmed'
+                        ? 'text-green-600'
+                        : status === 'Pending'
+                        ? 'text-yellow-600'
+                        : 'text-red-600'
+                }`}>
                     {status}
                 </span>
             ),
@@ -116,7 +130,7 @@ function ClinicHomePage() {
                         transition={{ delay: 0.2 }}
                         className="text-4xl md:text-5xl font-bold text-gray-800 mb-2"
                     >
-                        Welcome back, <span className="text-yellow-500">{clinicName}!</span>
+                        Welcome back, <span className="text-yellow-500">{clinicName || 'Clinic'}!</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -127,8 +141,6 @@ function ClinicHomePage() {
                         Here's a quick overview of your clinic.
                     </motion.p>
                 </div>
-
-
 
                 {/* Stat Cards */}
                 <motion.div
@@ -161,9 +173,6 @@ function ClinicHomePage() {
                     <StatCard icon={<FaStar />} title="Total Ratings" value="4" />
                 </motion.div>
 
-
-
-
                 {/* Appointment Table */}
                 <div className="mt-20">
                     <h2 className="text-3xl font-bold text-blue-900 mb-6 flex items-center gap-2">
@@ -178,7 +187,7 @@ function ClinicHomePage() {
                     >
                         <Table
                             columns={columns}
-                            dataSource={AllAppoints}
+                            dataSource={AllAppoints || []}
                             rowKey="_id"
                             pagination={{ pageSize: 4 }}
                             bordered
@@ -186,7 +195,7 @@ function ClinicHomePage() {
                     </motion.div>
                 </div>
 
-                        {/* Clinic Overview Section */}
+                {/* Clinic Overview Section */}
                 <div className="mt-20">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -200,20 +209,6 @@ function ClinicHomePage() {
                         </p>
                     </motion.div>
                 </div>
-
-                {/* Call to Action */}
-                {/* <div className="mt-20 text-center">
-                    <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        className="bg-yellow-300 p-6 rounded-xl inline-block shadow-md cursor-pointer"
-                        onClick={() => navigate('/manageDoctors')}
-                    >
-                        <div className="flex items-center gap-3 justify-center text-blue-900 font-semibold">
-                            <FaUserMd className="text-2xl" />
-                            <span>Manage Clinic Staff & Services</span>
-                        </div>
-                    </motion.div>
-                </div> */}
 
                 {/* Testimonial Section */}
                 <div className="mt-20">
@@ -237,7 +232,6 @@ function ClinicHomePage() {
                     </motion.div>
                 </div>
             </motion.section>
-
 
             <Footer />
         </>
